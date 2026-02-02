@@ -1,0 +1,85 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps chromium
+      
+    - name: Create .env file
+      run: |
+        mkdir -p src/helper/env
+        echo "BASEURL=${{ secrets.BASEURL || 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login' }}" >> src/helper/env/.env
+        echo "BROWSER=${{ secrets.BROWSER || 'chrome' }}" >> src/helper/env/.env
+        echo "HEAD=${{ secrets.HEAD || 'true' }}" >> src/helper/env/.env
+      
+    - name: Run Cucumber tests (Initial Run)
+      id: initial-test
+      run: npm test
+      continue-on-error: true
+      
+    - name: Retry failed scenarios
+      id: retry-test
+      if: always() && steps.initial-test.outcome == 'failure'
+      run: |
+        if [ -f "@rerun.txt" ] && [ -s "@rerun.txt" ]; then
+          echo "Retrying failed scenarios from @rerun.txt..."
+          npm run test:failed
+        else
+          echo "No failed scenarios to retry (rerun file not found or empty)"
+        fi
+      continue-on-error: true
+      
+    - name: Generate HTML Report
+      if: always()
+      run: npm run posttest
+      continue-on-error: true
+      
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          test-results/
+        retention-days: 30
+        
+    - name: Upload videos
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-videos
+        path: |
+          test-results/videos/
+        retention-days: 30
+        
+    - name: Upload HTML report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-report
+        path: |
+          test-results/reports/
+        retention-days: 30

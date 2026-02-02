@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+npm
+npx
+
+# Test Results
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+playwright/.auth/
+features/*.html
+@rerun.txt
+*.html
+assets/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+src/helper/env/.env
+src/helper/env/.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+dist/
+build/
+*.tsbuildinfo
+
+# Temporary files
+*.tmp
+*.temp
+e2e-automation-playwright-ts-bdd@*
+
+# Package manager (keep package-lock.json for reproducible builds)
+yarn.lock
+pnpm-lock.yaml
