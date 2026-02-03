@@ -8,6 +8,7 @@ export default class PimEmployeePersonalDetailsPage {
         this.base = new PlaywrightWrapper(page);
     }
 
+    // CSS selector for employee full name label element
     private Elements = {
         employeeFullNameLabel: ".oxd-label.oxd-input-field-required:has-text('Employee Full Name')"
     }

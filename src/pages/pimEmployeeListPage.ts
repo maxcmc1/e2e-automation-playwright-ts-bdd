@@ -8,6 +8,7 @@ export default class PimEmployeeListPage {
         this.base = new PlaywrightWrapper(page);
     }
 
+    // CSS and XPath selectors for employee list page elements
     private Elements = {
         addButton: "button[class='oxd-button oxd-button--medium oxd-button--secondary']",
         employeeListTab: "//a[text()='Employee List']",
@@ -35,6 +36,7 @@ export default class PimEmployeeListPage {
         await employeeNameInput.waitFor({ state: 'visible', timeout: 30000 });
         await employeeNameInput.fill(fullName);
         
+        // Click search button to execute search
         const searchButton = this.page.locator(this.Elements.searchButton);
         await searchButton.waitFor({ state: 'visible', timeout: 30000 });
         await searchButton.click();
@@ -45,11 +47,18 @@ export default class PimEmployeeListPage {
         await expect(employeeElement).toBeVisible({ timeout: 30000 });
     }
 
+    /**
+     * Clicks the trash/delete button and confirms deletion
+     * Performs complete delete flow: click trash icon, wait for confirmation dialog, click delete
+     * Note: Employee checkbox must be selected before calling this method
+     */
     async clickTrashButtonAndWaitForDelete() {
+        // Click trash button to initiate delete
         const trashButton = this.page.locator(this.Elements.trashButton);
         await trashButton.waitFor({ state: 'visible', timeout: 30000 });
         await trashButton.click();
         
+        // Wait for delete confirmation button and click it
         const deleteButton = this.page.locator(this.Elements.deleteButton);
         await expect(deleteButton).toBeVisible({ timeout: 30000 });
         await deleteButton.click();

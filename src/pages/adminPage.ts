@@ -1,9 +1,9 @@
 import { Page, expect } from "@playwright/test";
 import PlaywrightWrapper from "../helper/wrapper/PlaywrightWrappers";
 
-
 export default class AdminPage {
-    private base: PlaywrightWrapper
+    private base: PlaywrightWrapper;
+    
     constructor(private page: Page) {
         this.base = new PlaywrightWrapper(page);
     }

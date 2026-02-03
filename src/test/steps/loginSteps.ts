@@ -5,6 +5,7 @@ import LoginPage from "../../pages/loginPage";
 import AdminPage from "../../pages/adminPage";
 import data from "../../helper/util/test-data/adminUser.json";
 
+// Set default timeout for all steps to 60 seconds
 setDefaultTimeout(60000);
 
 let loginPage: LoginPage;
@@ -31,6 +32,7 @@ When('User clear all input fields', async function () {
 });
 
 When('User click on the login button', async function () {
+    // Accept any native browser dialogs that may appear
     fixture.page.once('dialog', async (dialog) => {
         await dialog.accept();
     });

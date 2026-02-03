@@ -8,6 +8,7 @@ export default class LoginPage {
         this.base = new PlaywrightWrapper(page);
     }
 
+    // CSS and XPath selectors for login page elements
     private Elements = {
         userInput: "input[placeholder='Username']",
         passwordInput: "input[placeholder='Password']",
@@ -24,11 +25,19 @@ export default class LoginPage {
         await this.page.locator(this.Elements.passwordInput).fill(Password);
     }
 
+    /**
+     * Clears all input fields on the login page
+     * Useful for resetting form state between test steps
+     */
     async clearAllFields() {
         await this.page.locator(this.Elements.userInput).clear();
         await this.page.locator(this.Elements.passwordInput).clear();
     }
 
+    /**
+     * Clicks the login button
+     * Uses wrapper method that includes wait logic for element visibility
+     */
     async clickLoginButton() {
         await this.base.waitAndClick(this.Elements.loginBtn);
     }

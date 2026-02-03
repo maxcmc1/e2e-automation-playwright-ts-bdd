@@ -8,6 +8,7 @@ export default class PimAddEmployeePage {
         this.base = new PlaywrightWrapper(page);
     }
 
+    // CSS and XPath selectors for add employee form elements
     private Elements = {
         firstNameInput: "input[placeholder='First Name']",
         lastNameInput: "input[placeholder='Last Name']",
